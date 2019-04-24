@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:fragment template="/view/template/padrao.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:caesb="http://caesb/jsf">
+
+	<p:dialog header="Cadastro de programacao" resizable="true" modal="true" position="center" widgetVar="dlgProgramacao"
+		width="950">
+
+		<h:form id="formEdicao">
+			<p:hotkey bind="esc" handler="PF'(dlgProgramacao').hide();" />
+			<p:focus context="formEdicao" />
+
+			<h:panelGrid columns="3" >
+
+				<h:panelGroup>
+					<p:panel header="Dados programacao">
+						<caesb:linhaForm label="AreaAtuacao:"> 
+							<p:inputText id="areaAtuacao" value="#{bean.entidade.areaAtuacao}"  /> 
+						</caesb:linhaForm> 
+						<caesb:linhaForm label="dataInicioPrevisto:"> 
+							<p:calendar locale="pt" value="#{bean.entidade.dataInicioPrevisto}" navigator="true" yearRange="1930:2050" 
+						id="dataInicioPrevisto" showOn="button" required="true" readOnlyInputText="true" 
+						pattern="dd/MM/yyyy" showButtonPanel="true" size="9" maxlength="10" > 
+							</p:calendar>
+						</caesb:linhaForm> 
+						<caesb:linhaForm label="dataTerminoPrevisto:"> 
+							<p:calendar locale="pt" value="#{bean.entidade.dataTerminoPrevisto}" navigator="true" yearRange="1930:2050" 
+						id="dataTerminoPrevisto" showOn="button" required="true" readOnlyInputText="true" 
+						pattern="dd/MM/yyyy" showButtonPanel="true" size="9" maxlength="10" > 
+							</p:calendar>
+						</caesb:linhaForm> 
+						<caesb:linhaForm label="PeriodoProgramacao:" id="periodoProgramacao"> 
+							<p:selectOneMenu value="#{bean.entidade.periodoProgramacao}" converter="#{periodoProgramacaoConverter}"> 
+								<f:selectItem itemLabel="Selecione" /> 
+								<f:selectItems value="#{bean.periodoProgramacao}" var="per" itemLabel="#{per.descricao}" itemValue="#{per}"/> 
+							</p:selectOneMenu> 
+						</caesb:linhaForm> 
+						<caesb:linhaForm label="QuantidadeRepeticoes:"> 
+							<p:inputText id="quantidadeRepeticoes" value="#{bean.entidade.quantidadeRepeticoes}"  /> 
+						</caesb:linhaForm> 
+						<caesb:linhaForm label="StatusExecucaoProgramacao_id:"> 
+							<p:inputText id="statusExecucaoProgramacao_id" value="#{bean.entidade.statusExecucaoProgramacao_id}"  /> 
+						</caesb:linhaForm> 
+						<caesb:linhaForm label="TipoProgramacao_id:"> 
+							<p:inputText id="tipoProgramacao_id" value="#{bean.entidade.tipoProgramacao_id}"  /> 
+						</caesb:linhaForm> 
+						<caesb:linhaForm label="UnidadeAdministrativa:" id="unidadeAdministrativa"> 
+							<p:selectOneMenu value="#{bean.entidade.unidadeAdministrativa}" converter="#{unidadeAdministrativaConverter}"> 
+								<f:selectItem itemLabel="Selecione" /> 
+								<f:selectItems value="#{bean.unidadeAdministrativa}" var="uni" itemLabel="#{uni.descricao}" itemValue="#{uni}"/> 
+							</p:selectOneMenu> 
+						</caesb:linhaForm> 
+					</p:panel>
+					<p:panel header="Dados programacaoArquivos">
+						<h:panelGrid columns="3" id="panelProgramacaoArquivos"> 
+							<caesb:linhaForm label="ArquivosProgramacao:" id="arquivosProgramacao"> 
+								<p:selectOneMenu value="#{bean.programacaoArquivos.arquivosProgramacao}" converter="#{arquivosProgramacaoConverter}"> 
+									<f:selectItem itemLabel="Selecione " /> 
+									<f:selectItems value="#{bean.registrosArquivosProgramacao}" var="arq" itemLabel="#{arq.descricao}" itemValue="#{arq}"/> 
+								</p:selectOneMenu> 
+							</caesb:linhaForm> 
+							<caesb:linhaForm label="Programacao:" id="programacao"> 
+								<p:selectOneMenu value="#{bean.programacaoArquivos.programacao}" converter="#{programacaoConverter}"> 
+									<f:selectItem itemLabel="Selecione " /> 
+									<f:selectItems value="#{bean.registrosProgramacao}" var="pro" itemLabel="#{pro.descricao}" itemValue="#{pro}"/> 
+								</p:selectOneMenu> 
+							</caesb:linhaForm> 
+						</h:panelGrid> 
+						<h:panelGrid columns="1"> 
+							<p:commandButton icon="ui-icon-check" actionListener="#{bean.inserirProgramacaoArquivos()}" process=":formEdicao:panelProgramacaoArquivos" update=":formEdicao:panelProgramacaoArquivos" /> 
+						</h:panelGrid> 
+						<p:dataTable var="item" value="#{bean.entidade.registrosProgramacaoArquivos}" emptyMessage="Nenhum programacaoArquivos"> 
+							<p:column headerText="arquivosProgramacao">#{item.arquivosProgramacao}</p:column> 
+							<p:column headerText="programacao">#{item.programacao}</p:column> 
+							<p:column styleClass="menuBotoes" width="10%"> 
+								<caesb:menuButton> 
+									<p:menuitem icon="ui-icon-pencil" /> 
+									<p:menuitem icon="ui-icon-trash" /> 
+								</caesb:menuButton> 
+							</p:column> 
+						</p:dataTable> 
+					</p:panel>
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:panel header="Dados programacaoExecucaoProgramacao">
+						<h:panelGrid columns="3" id="panelProgramacaoExecucaoProgramacao"> 
+							<caesb:linhaForm label="ExecucaoProgramacao:" id="execucaoProgramacao"> 
+								<p:selectOneMenu value="#{bean.programacaoExecucaoProgramacao.execucaoProgramacao}" converter="#{execucaoProgramacaoConverter}"> 
+									<f:selectItem itemLabel="Selecione " /> 
+									<f:selectItems value="#{bean.registrosExecucaoProgramacao}" var="exe" itemLabel="#{exe.descricao}" itemValue="#{exe}"/> 
+								</p:selectOneMenu> 
+							</caesb:linhaForm> 
+							<caesb:linhaForm label="Programacao:" id="programacao"> 
+								<p:selectOneMenu value="#{bean.programacaoExecucaoProgramacao.programacao}" converter="#{programacaoConverter}"> 
+									<f:selectItem itemLabel="Selecione " /> 
+									<f:selectItems value="#{bean.registrosProgramacao}" var="pro" itemLabel="#{pro.descricao}" itemValue="#{pro}"/> 
+								</p:selectOneMenu> 
+							</caesb:linhaForm> 
+						</h:panelGrid> 
+						<h:panelGrid columns="1"> 
+							<p:commandButton icon="ui-icon-check" actionListener="#{bean.inserirProgramacaoExecucaoProgramacao()}" process=":formEdicao:panelProgramacaoExecucaoProgramacao" update=":formEdicao:panelProgramacaoExecucaoProgramacao" /> 
+						</h:panelGrid> 
+						<p:dataTable var="item" value="#{bean.entidade.registrosProgramacaoExecucaoProgramacao}" emptyMessage="Nenhum programacaoExecucaoProgramacao"> 
+							<p:column headerText="execucaoProgramacao">#{item.execucaoProgramacao}</p:column> 
+							<p:column headerText="programacao">#{item.programacao}</p:column> 
+							<p:column styleClass="menuBotoes" width="10%"> 
+								<caesb:menuButton> 
+									<p:menuitem icon="ui-icon-pencil" /> 
+									<p:menuitem icon="ui-icon-trash" /> 
+								</caesb:menuButton> 
+							</p:column> 
+						</p:dataTable> 
+					</p:panel>
+			</h:panelGrid>
+			<p>
+			<center>
+				<p:commandButton value="Salvar" actionListener="#{bean.cadastrar}" update=":formPesquisa,formEdicao" rendered="#{bean.entidade.id eq null}" oncomplete="if(args.fechar) PF'(dlgProgramacao').hide()" />
+
+				<p:commandButton value="Salvar" actionListener="#{bean.alterar}" update=":formPesquisa,formEdicao" rendered="#{bean.entidade.id ne null}"  oncomplete="if(args.fechar) PF'(dlgProgramacao').hide()" />
+			</center>
+			</p>
+		</h:form>
+	</p:dialog>
+</ui:fragment>

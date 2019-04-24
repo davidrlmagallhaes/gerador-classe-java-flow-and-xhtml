@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition template="/view/template/padrao.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:caesb="http://caesb/jsf">
+
+	<ui:define name="titulo">Pesquisar programacao</ui:define>
+	<ui:define name="botoes">
+		<h:form id="botoes">
+			<p:commandButton value="Cadastrar" actionListener="#{bean.criar}" update=":formEdicao" oncomplete="PF('dlgProgramacao').show()" />
+		</h:form>
+	</ui:define>
+	<ui:define name="conteudo">
+
+		<h:form id="formPesquisa">
+
+			<p:focus context="formPesquisa" />
+			<p:defaultCommand target="pesquisarProgramacao" />
+
+			<p:panel header="Filtro de Pesquisa">
+
+				<h:panelGrid columns="3">
+					<caesb:linhaForm label="AreaAtuacao:"> 
+						<p:inputText id="filtroAreaAtuacao" value="#{bean.filtro.areaAtuacao}"  /> 
+					</caesb:linhaForm> 
+					<caesb:linhaForm label="dataInicioPrevisto:"> 
+						<p:calendar locale="pt" value="#{bean.filtro.dataInicioPrevisto}" navigator="true" yearRange="1930:2050" 
+						id="filtroDataInicioPrevisto" showOn="button" required="true" readOnlyInputText="true" 
+						pattern="dd/MM/yyyy" showButtonPanel="true" size="9" maxlength="10" > 
+						</p:calendar>
+					</caesb:linhaForm> 
+					<caesb:linhaForm label="dataTerminoPrevisto:"> 
+						<p:calendar locale="pt" value="#{bean.filtro.dataTerminoPrevisto}" navigator="true" yearRange="1930:2050" 
+						id="filtroDataTerminoPrevisto" showOn="button" required="true" readOnlyInputText="true" 
+						pattern="dd/MM/yyyy" showButtonPanel="true" size="9" maxlength="10" > 
+						</p:calendar>
+					</caesb:linhaForm> 
+					<caesb:linhaForm label="PeriodoProgramacao:" id="filtroPeriodoProgramacao"> 
+						<p:selectOneMenu value="#{bean.filtro.periodoProgramacao}" > 
+							<f:selectItem itemLabel="Selecione PeriodoProgramacao" /> 
+							<f:selectItems value="#{bean.registrosPeriodoProgramacao}" var="item" itemLabel="#{item.descricao}" /> 
+						</p:selectOneMenu> 
+					</caesb:linhaForm> 
+					<caesb:linhaForm label="QuantidadeRepeticoes:"> 
+						<p:inputText id="filtroQuantidadeRepeticoes" value="#{bean.filtro.quantidadeRepeticoes}"  /> 
+					</caesb:linhaForm> 
+					<caesb:linhaForm label="StatusExecucaoProgramacao_id:"> 
+						<p:inputText id="filtroStatusExecucaoProgramacao_id" value="#{bean.filtro.statusExecucaoProgramacao_id}"  /> 
+					</caesb:linhaForm> 
+					<caesb:linhaForm label="TipoProgramacao_id:"> 
+						<p:inputText id="filtroTipoProgramacao_id" value="#{bean.filtro.tipoProgramacao_id}"  /> 
+					</caesb:linhaForm> 
+					<caesb:linhaForm label="UnidadeAdministrativa:" id="filtroUnidadeAdministrativa"> 
+						<p:selectOneMenu value="#{bean.filtro.unidadeAdministrativa}" > 
+							<f:selectItem itemLabel="Selecione UnidadeAdministrativa" /> 
+							<f:selectItems value="#{bean.registrosUnidadeAdministrativa}" var="item" itemLabel="#{item.descricao}" /> 
+						</p:selectOneMenu> 
+					</caesb:linhaForm> 
+					<p:commandButton id="pesquisarProgramacao" value="Pesquisar" actionListener="#{bean.pesquisar}" update=":formResultado" />
+				</h:panelGrid>
+
+			</p:panel>
+
+		</h:form>
+
+		<h:form id="formResultado">
+
+			<p:dataTable id="dtResultado" var="pro" value="#{bean.entidades}" paginator="true" paginatorPosition="bottom"
+				emptyMessage="Nenhum resultado encontrado" rows="10" rowsPerPageTemplate="10,20,50">
+				<f:facet name="header">#{bean.entidades.size()}programacao(s) adicionado(s)</f:facet>
+				<p:column style="width:4%">
+					<p:rowToggler />
+				</p:column>
+
+
+				<p:column headerText="AreaAtuacao" filterBy="#{pro.areaAtuacao}" filterMatchMode="contains">
+					<h:outputText value="#{pro.areaAtuacao}" />
+				</p:column>
+				<p:column headerText="DataInicioPrevisto" width="100" style="text-align: center" filterBy="#{pro.dataInicioPrevistoFormatada}" filterMatchMode="contains">
+					<h:outputText value="#{pro.dataInicioPrevisto}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="DataTerminoPrevisto" width="100" style="text-align: center" filterBy="#{pro.dataTerminoPrevistoFormatada}" filterMatchMode="contains">
+					<h:outputText value="#{pro.dataTerminoPrevisto}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="PeriodoProgramacao" style="text-align: center" filterBy="#{pro.periodoProgramacao.descricao}" filterMatchMode="contains">
+					<h:outputText value="#{pro.periodoProgramacao.descricao}" />
+				</p:column>
+				<p:column headerText="QuantidadeRepeticoes" filterBy="#{pro.quantidadeRepeticoes}" filterMatchMode="contains">
+					<h:outputText value="#{pro.quantidadeRepeticoes}" />
+				</p:column>
+				<p:column headerText="StatusExecucaoProgramacao_id" filterBy="#{pro.statusExecucaoProgramacao_id}" filterMatchMode="contains">
+					<h:outputText value="#{pro.statusExecucaoProgramacao_id}" />
+				</p:column>
+				<p:column headerText="TipoProgramacao_id" filterBy="#{pro.tipoProgramacao_id}" filterMatchMode="contains">
+					<h:outputText value="#{pro.tipoProgramacao_id}" />
+				</p:column>
+				<p:column headerText="UnidadeAdministrativa" style="text-align: center" filterBy="#{pro.unidadeAdministrativa.descricao}" filterMatchMode="contains">
+					<h:outputText value="#{pro.unidadeAdministrativa.descricao}" />
+				</p:column>
+
+				<p:rowExpansion >
+					<h:panelGrid columns="2" >
+						<h:panelGrid columns="2" columnClasses="campo,valor">
+							<h:outputLabel value="ArquivosProgramacao_id:" />
+							<h:outputLabel value="#{pro.registrosProgramacaoArquivos.arquivosProgramacao}"  />
+
+						</h:panelGrid>
+					</h:panelGrid>
+					<h:panelGrid columns="2" >
+						<h:panelGrid columns="2" columnClasses="campo,valor">
+							<h:outputLabel value="ExecucaoProgramacao_id:" />
+							<h:outputLabel value="#{pro.registrosProgramacaoExecucaoProgramacao.execucaoProgramacao}"  />
+
+						</h:panelGrid>
+					</h:panelGrid>
+				</p:rowExpansion>
+				<p:column styleClass="menuBotoes" rendered="#{caesb:hasAccess('ALT_PROGRAMACAO,REM_PROGRAMACAO') and not empty bean.entidades}">
+					<caesb:menuButton>
+						<p:menuitem icon="ui-icon-pencil" value="Alterar" actionListener="#{bean.setEntidade(pro)}" update=":formPesquisa,:formEdicao"
+							oncomplete="PF('dlgProgramacao').show()" rendered="#{caesb:hasAccess('ALT_PROGRAMACAO')}" />
+
+						<p:menuitem icon="ui-icon-trash" value="Remover" actionListener="#{bean.remover(pro)}"
+							onclick="if (!confirm('Deseja remover programacao?')) return false" update=":formPesquisa" rendered="#{caesb:hasAccess('REM_PROGRAMACAO')}" />
+					</caesb:menuButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="rodape">
+		<ui:include src="programacaoEdicao.xhtml" />
+	</ui:define>
+</ui:composition>
