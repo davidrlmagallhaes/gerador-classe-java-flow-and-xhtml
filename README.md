@@ -1,7 +1,7 @@
 # gerador-classe-java-flow-and-xhtml
 GERADOR CLASSE JAVA
 
-Script em MS SQLSERVER(2008) que gera classe JAVA (FLOW e XHTML) de pesquisa e edição, se você é um desenvolvedor Full Stark ou quer fazer sua equipe produzir com maior agilidade e precisão.
+Script em MS SQLSERVER(2008) que gera classe JAVA (FLOW e XHTML) de pesquisa e edição, se você é um desenvolvedor Full Stack ou quer fazer sua equipe produzir com maior agilidade e precisão.
 
 Dê uma olhada e adapte-o para o seu ambiente de desenvolvimento.
 
